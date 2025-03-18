@@ -174,5 +174,5 @@ requirements.lock
 
 # Devenv files
 .devenv/
-devenv.lock
 .devenv.flake.nix
+devenv.lock
