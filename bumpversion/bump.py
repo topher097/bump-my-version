@@ -76,6 +76,9 @@ def do_bump(
     logger.indent()
 
     ctx = get_context(config)
+    
+    logger.info(ctx)
+    return
 
     logger.info("Parsing current version '%s'", config.current_version)
     logger.indent()

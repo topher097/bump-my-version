@@ -1,0 +1,60 @@
+
+{ pkgs, lib, config, inputs, ... }:
+
+let
+  system = pkgs.stdenv.system;
+  git-hooks = inputs.git-hooks.packages.${system}.git-hooks;
+in {
+  name = "bumpversion";
+
+  # Languages to include in the environment
+  languages = {
+    python = {
+      enable = true;
+      version = "3.12.7";
+      uv = {
+        enable = true;
+        sync.enable = false;
+      };
+    };
+  };
+
+  # Define global environment variables. Private environment variables should reside in '.envrc.private'
+  env = {
+    UV_LINK_MODE = "copy";
+    UV_PYTHON_PREFERENCE = "only-system";
+    UV_PYTHON = "3.12.7";
+    UV_PYTHON_DOWNLOADS = "never";
+  };
+
+  # https://devenv.sh/packages/
+  packages = with pkgs; [
+    bashInteractive
+    just
+    uv
+    just
+    xclip
+    fzf
+    jq
+    curl
+    git
+    docker
+  ];
+
+  # Commands which run when the shell is started
+  enterShell = ''
+    # Python environment setup
+    just ready-py
+
+    # Own the local directory
+    just own
+
+    # Run the fish shell instead of bash
+    fish --init-command="source .devenv/state/venv/bin/activate.fish"
+
+    # When the command 'exit' is run to exit the fish shell, then the bash shell is run, so exit that
+    exit
+  '';
+
+  # See full reference at https://devenv.sh/reference/options/
+}
