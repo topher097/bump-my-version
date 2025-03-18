@@ -39,6 +39,7 @@ in {
     curl
     git
     docker
+    pre-commit
   ];
 
   # Commands which run when the shell is started
@@ -48,6 +49,9 @@ in {
 
     # Own the local directory
     just own
+
+    # Install the pre-commit hooks
+    pre-commit install
 
     # Run the fish shell instead of bash
     fish --init-command="source .devenv/state/venv/bin/activate.fish"
